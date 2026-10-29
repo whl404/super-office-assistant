@@ -1,0 +1,633 @@
+{
+  "schema_version": "1.0",
+  "snapshot_date": "2026-10-29",
+  "scope": "current_codex_host",
+  "default_tool_policy": "deny_unlisted",
+  "notes": [
+    "连接与授权状态来自本会话记录，不是持续健康检查。read_probe_passed 只表示某项只读探测成功，不代表全部工具或写入权限已验证。",
+    "本清单只保留当前任务常用的显式工具，不能按 get/list 名称自动判定无副作用。",
+    "所有写入需要可信任务授权和实际资源范围；此文件本身不授予权限。"
+  ],
+  "services": [
+    {
+      "id": "dingtalk-bot",
+      "label": "机器人消息",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 12,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_bot__search_my_robots",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_bot__search_groups_by_keyword",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_bot__list_group_bots",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_bot__send_robot_group_message",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_bot__batch_send_robot_msg_to_users",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-report",
+      "label": "钉钉日志",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 9,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_report__get_available_report_templates",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_report__get_template_details_by_name",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_report__get_send_report_list",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_report__create_report",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-aitable",
+      "label": "钉钉 AI 表格",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 136,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_aitable__list_bases",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__search_bases",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__get_base",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__get_tables",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__get_fields",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__query_records",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__query_records_stats",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__get_record_write_result",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__create_records",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_aitable__update_records",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-doc",
+      "label": "钉钉文档",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 40,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_doc__get_recent_list",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_doc__search_documents",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_doc__get_document_info",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_doc__get_document_content",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_doc__list_nodes",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_doc__create_document",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_doc__update_document",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-contact",
+      "label": "钉钉通讯录",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 54,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_contact__get_current_user_profile",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_contact__get_dept_info_by_dept_id",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_contact__get_sub_depts_by_dept_id",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_contact__get_dept_members_by_deptId",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_contact__get_friend_list",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_contact__search_user_by_key_word",
+          "effect": "read"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-calendar",
+      "label": "钉钉日历",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 27,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_calendar__list_calendars",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_calendar__list_calendar_events",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_calendar__get_calendar_detail",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_calendar__query_busy_status",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_calendar__create_calendar_event",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_calendar__update_calendar_event",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-todo",
+      "label": "钉钉待办",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 29,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_todo__get_user_todos",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_todo__get_todo_detail",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_todo__get_user_todos_in_current_org",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_todo__create_personal_todo",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_todo__update_todo_task",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_todo__update_todo_done_status",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-sheet",
+      "label": "钉钉表格",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 76,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_sheet__search_sheet_templates",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_sheet__get_all_sheets",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_sheet__get_range",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_sheet__get_sheet_revision",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_sheet__get_sheet_changeset",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_sheet__append_rows",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_sheet__set_cell_range",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-group",
+      "label": "钉钉群聊",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "discovered_only",
+      "discovered_tool_count": 1,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_group__create_internal_org_group",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-oa",
+      "label": "钉钉 OA 审批",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 43,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_oa__list_user_visible_process",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_oa__list_pending_approvals",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_oa__get_processInstance_detail",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_oa__get_template_detail",
+          "effect": "read"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-teambition",
+      "label": "Teambition 项目管理（新）",
+      "owner": "teambition",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 26,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_teambition__get_user_projects",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__list_projects",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__get_project_task_types",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__get_project_member_list",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__get_task_detail",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__get_task_progress",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__search_project_workflow_status",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__search_task_ids_by_tql",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__list_org_task_priorities",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__create_task",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__update_task_status",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__update_task_remark",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__set_task_due_date",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_teambition__add_task_comment",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-drive",
+      "label": "钉钉钉盘",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 28,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_drive__list_spaces",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_drive__list_files",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_drive__search_files",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_drive__get_file_info",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_drive__create_folder",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-mail",
+      "label": "钉钉邮箱",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 68,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_mail__get_mailbox_profile",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_mail__list_user_mailboxes",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_mail__search_emails",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_mail__get_email_by_message_id",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_mail__create_draft",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_mail__send_draft",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_mail__send_email",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-wiki",
+      "label": "钉钉知识库",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 11,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_wiki__list_wikiSpaces",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_wiki__search_wikiSpaces",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_wiki__get_wikiSpace",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_wiki__create_wikiSpace",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-aiyin",
+      "label": "AI印设计服务",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "discovered_only",
+      "discovered_tool_count": 6,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_aiyin__generate",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_aiyin__edit",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_aiyin__upscale",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-workbench",
+      "label": "钉钉工作台",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 2,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_workbench__get_user_workspace_apps",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_workbench__batch_get_app_details",
+          "effect": "read"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-meeting",
+      "label": "钉钉视频会议",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "discovered_only",
+      "discovered_tool_count": 2,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_meeting__create_meeting_reservation",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__dingtalk_meeting__invite_meeting_participants",
+          "effect": "write"
+        }
+      ]
+    },
+    {
+      "id": "dingtalk-open-platform-docs",
+      "label": "钉钉开放平台文档搜索",
+      "owner": "dingtalk",
+      "transport": "streamable_http",
+      "connection_status": "oauth_configured",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 6,
+      "tools": [
+        {
+          "name": "mcp__dingtalk_open_platform_docs__search_dingtalk_open_docs",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__dingtalk_open_platform_docs__search_open_error_code_rag",
+          "effect": "read"
+        }
+      ]
+    }
+  ],
+  "known_limitations": [
+    {
+      "service_id": "dingtalk-contact",
+      "tool": "mcp__dingtalk_contact__get_org_ext_fields",
+      "code": "12063",
+      "detail": "员工属性字段查询权限不足；基础个人信息与根部门人数查询已成功。"
+    },
+    {
+      "service_id": "dingtalk-bot",
+      "detail": "机器人列表探测成功但为空；发送前需定位已可用且有会话权限的机器人。"
+    },
+    {
+      "service_id": "dingtalk-open-platform-docs",
+      "tool": "mcp__dingtalk_open_platform_docs__devdoc_rag_pretest",
+      "detail": "本次探测返回空结果；采用已返回资料的 search_dingtalk_open_docs。"
+    }
+  ],
+  "excluded_services": [
+    {
+      "name": "DING消息（应用授权）",
+      "reason": "用户取消接入"
+    },
+    {
+      "name": "工作通知（应用授权）",
+      "reason": "用户取消接入"
+    },
+    {
+      "name": "GitLab MCP",
+      "reason": "用户暂停接入"
+    }
+  ],
+  "local_tools": [
+    {
+      "id": "dws",
+      "owner": "dingtalk",
+      "version": "1.0.66",
+      "status": "installed_and_authenticated",
+      "executable_hint": "%USERPROFILE%/.local/bin/dws.exe",
+      "dispatch": "schema_checked_argument_array",
+      "notes": "当前会话登录成功；执行时重新核验身份。禁止作为 MCP 越权或写入未知结果的绕行路径。"
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0",
+  "revision": "0.5",
+  "entry_agent": "orchestrator",
+  "catalog_path": "config/mcp-catalog.json",
+  "runtime_status": "durable_scheduler_available",
+  "approval_policy_path": "config/approvals.json",
+  "runtime_controls": {
+    "max_parallel_runs": 1,
+    "max_parallel_tasks": 2,
+    "max_model_calls": 30,
+    "max_tool_calls": 30,
+    "max_rework_rounds": 2,
+    "external_write_authorization": "trusted_task_scope_required",
+    "unknown_tool": "deny",
+    "unknown_write_outcome": "reconcile_before_retry",
+    "unconfigured_model": "block_model_execution",
+    "unconfigured_budget": "block_unattended_execution"
+  },
+  "agents": [
+    {
+      "id": "orchestrator",
+      "enabled": true,
+      "status": "configured",
+      "role_path": "agents/orchestrator/AGENT.md",
+      "model_config_ref": null,
+      "max_parallel_tasks": 1,
+      "skills": [
+        {
+          "id": "orchestrate-delivery",
+          "path": "agents/orchestrator/skills/orchestrate-delivery/SKILL.md",
+          "effects": [
+            "read"
+          ],
+          "services": []
+        }
+      ],
+      "local_execution": "none"
+    },
+    {
+      "id": "dingtalk",
+      "enabled": true,
+      "status": "configured",
+      "role_path": "agents/dingtalk/AGENT.md",
+      "model_config_ref": null,
+      "max_parallel_tasks": 1,
+      "skills": [
+        {
+          "id": "dingtalk-task-communication",
+          "path": "agents/dingtalk/skills/dingtalk-task-communication/SKILL.md",
+          "effects": [
+            "read",
+            "write"
+          ],
+          "services": [
+            "dingtalk-bot",
+            "dingtalk-doc"
+          ]
+        },
+        {
+          "id": "dingtalk-office-query",
+          "path": "agents/dingtalk/skills/dingtalk-office-query/SKILL.md",
+          "effects": [
+            "read"
+          ],
+          "services": [
+            "dingtalk-bot",
+            "dingtalk-report",
+            "dingtalk-aitable",
+            "dingtalk-doc",
+            "dingtalk-contact",
+            "dingtalk-calendar",
+            "dingtalk-todo",
+            "dingtalk-sheet",
+            "dingtalk-oa",
+            "dingtalk-drive",
+            "dingtalk-mail",
+            "dingtalk-wiki",
+            "dingtalk-workbench",
+            "dingtalk-open-platform-docs"
+          ]
+        },
+        {
+          "id": "dingtalk-scoped-write",
+          "path": "agents/dingtalk/skills/dingtalk-scoped-write/SKILL.md",
+          "effects": [
+            "read",
+            "write"
+          ],
+          "services": [
+            "dingtalk-bot",
+            "dingtalk-report",
+            "dingtalk-aitable",
+            "dingtalk-doc",
+            "dingtalk-contact",
+            "dingtalk-calendar",
+            "dingtalk-todo",
+            "dingtalk-sheet",
+            "dingtalk-group",
+            "dingtalk-oa",
+            "dingtalk-drive",
+            "dingtalk-mail",
+            "dingtalk-wiki",
+            "dingtalk-aiyin",
+            "dingtalk-workbench",
+            "dingtalk-meeting"
+          ]
+        },
+        {
+          "id": "dingtalk-api-research",
+          "path": "agents/dingtalk/skills/dingtalk-api-research/SKILL.md",
+          "effects": [
+            "read"
+          ],
+          "services": [
+            "dingtalk-open-platform-docs"
+          ]
+        }
+      ],
+      "local_execution": "dws_via_adapter_only"
+    },
+    {
+      "id": "teambition",
+      "enabled": true,
+      "status": "configured",
+      "role_path": "agents/teambition/AGENT.md",
+      "model_config_ref": null,
+      "max_parallel_tasks": 1,
+      "skills": [
+        {
+          "id": "teambition-task-sync",
+          "path": "agents/teambition/skills/teambition-task-sync/SKILL.md",
+          "effects": [
+            "read",
+            "write"
+          ],
+          "services": [
+            "dingtalk-teambition"
+          ]
+        },
+        {
+          "id": "teambition-project-query",
+          "path": "agents/teambition/skills/teambition-project-query/SKILL.md",
+          "effects": [
+            "read"
+          ],
+          "services": [
+            "dingtalk-teambition"
+          ]
+        }
+      ],
+      "local_execution": "none"
+    },
+    {
+      "id": "gitlab",
+      "enabled": false,
+      "status": "paused_by_user",
+      "role_path": "agents/gitlab/AGENT.md",
+      "model_config_ref": null,
+      "max_parallel_tasks": 1,
+      "skills": [
+        {
+          "id": "gitlab-mr-delivery",
+          "path": "agents/gitlab/skills/gitlab-mr-delivery/SKILL.md",
+          "effects": [
+            "read"
+          ],
+          "services": []
+        }
+      ],
+      "local_execution": "none"
+    },
+    {
+      "id": "developer",
+      "enabled": true,
+      "status": "configured",
+      "role_path": "agents/developer/AGENT.md",
+      "model_config_ref": null,
+      "max_parallel_tasks": 1,
+      "skills": [
+        {
+          "id": "implement-change",
+          "path": "agents/developer/skills/implement-change/SKILL.md",
+          "effects": [
+            "local_write"
+          ],
+          "services": []
+        }
+      ],
+      "local_execution": "isolated_workspace_required"
+    },
+    {
+      "id": "reviewer",
+      "enabled": true,
+      "status": "configured",
+      "role_path": "agents/reviewer/AGENT.md",
+      "model_config_ref": null,
+      "max_parallel_tasks": 1,
+      "skills": [
+        {
+          "id": "review-delivery",
+          "path": "agents/reviewer/skills/review-delivery/SKILL.md",
+          "effects": [
+            "read"
+          ],
+          "services": []
+        }
+      ],
+      "local_execution": "isolated_workspace_required"
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "schema_version": "1.0",
+  "workflows": [
+    {
+      "id": "office-query",
+      "description": "查询通讯录、文档、日历、邮箱等；只返回原请求渠道，不建立项目任务或自动发通知",
+      "delivery_target": "answer_with_evidence",
+      "required_inputs": [
+        "query"
+      ],
+      "steps": [
+        {
+          "id": "plan",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": []
+        },
+        {
+          "id": "query",
+          "agent": "dingtalk",
+          "skill": "dingtalk-office-query",
+          "effect": "read",
+          "depends_on": [
+            "plan"
+          ],
+          "requires_tool_effect": "read"
+        },
+        {
+          "id": "deliver",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": [
+            "query"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project-query",
+      "description": "查询项目、任务、进展；不做状态变更",
+      "delivery_target": "project_answer_with_evidence",
+      "required_inputs": [
+        "query"
+      ],
+      "steps": [
+        {
+          "id": "plan",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": []
+        },
+        {
+          "id": "query",
+          "agent": "teambition",
+          "skill": "teambition-project-query",
+          "effect": "read",
+          "depends_on": [
+            "plan"
+          ],
+          "requires_tool_effect": "read"
+        },
+        {
+          "id": "deliver",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": [
+            "query"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "document-to-tasks",
+      "description": "从明确文档读取需求，在指定项目创建任务并逐项核验",
+      "delivery_target": "verified_task_links",
+      "required_inputs": [
+        "document_ref",
+        "project_ref",
+        "task_creation_authorization"
+      ],
+      "steps": [
+        {
+          "id": "plan",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": []
+        },
+        {
+          "id": "read",
+          "agent": "dingtalk",
+          "skill": "dingtalk-office-query",
+          "effect": "read",
+          "depends_on": [
+            "plan"
+          ],
+          "requires_tool_effect": "read"
+        },
+        {
+          "id": "task-plan",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": [
+            "read"
+          ]
+        },
+        {
+          "id": "create",
+          "agent": "teambition",
+          "skill": "teambition-task-sync",
+          "effect": "write",
+          "depends_on": [
+            "task-plan"
+          ],
+          "requires_tool_effect": "write"
+        },
+        {
+          "id": "verify",
+          "agent": "teambition",
+          "skill": "teambition-project-query",
+          "effect": "read",
+          "depends_on": [
+            "create"
+          ],
+          "requires_tool_effect": "read"
+        },
+        {
+          "id": "deliver",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": [
+            "verify"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "office-action",
+      "description": "在用户明确的对象与参数范围内完成办公操作；发送或创建需要具体任务授权",
+      "delivery_target": "verified_operation_result",
+      "required_inputs": [
+        "action",
+        "target_refs",
+        "task_authorization"
+      ],
+      "steps": [
+        {
+          "id": "plan",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": []
+        },
+        {
+          "id": "act",
+          "agent": "dingtalk",
+          "skill": "dingtalk-scoped-write",
+          "effect": "write",
+          "depends_on": [
+            "plan"
+          ],
+          "requires_tool_effect": "write"
+        },
+        {
+          "id": "deliver",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": [
+            "act"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "local-code-change",
+      "description": "用户明确选择本地代码交付时，开发与评审配合；不自动创建 MR 或推送",
+      "delivery_target": "local_diff_and_review",
+      "required_inputs": [
+        "repository_ref",
+        "base_sha",
+        "acceptance_criteria",
+        "workspace_authorization"
+      ],
+      "steps": [
+        {
+          "id": "plan",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": []
+        },
+        {
+          "id": "implement",
+          "agent": "developer",
+          "skill": "implement-change",
+          "effect": "local_write",
+          "depends_on": [
+            "plan"
+          ]
+        },
+        {
+          "id": "review",
+          "agent": "reviewer",
+          "skill": "review-delivery",
+          "effect": "read",
+          "depends_on": [
+            "implement"
+          ]
+        },
+        {
+          "id": "deliver",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": [
+            "review"
+          ]
+        }
+      ]
+    }
+  ],
+  "unavailable_workflows": [
+    {
+      "id": "gitlab-mr-delivery",
+      "reason": "GitLab MCP 与 Agent 已按用户要求暂停；不能自动替换为 GitHub，也不能把本地差异当成 MR 交付。"
+    }
+  ]
+}
