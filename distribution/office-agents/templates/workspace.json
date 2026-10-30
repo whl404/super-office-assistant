@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "workspace": {"name": "", "path": "", "repository": ""},
+  "agentBinding": {
+    "scope": "user", "entry": "office-orchestrator",
+    "roles": {"developer": "office-developer", "reviewer": "office-reviewer", "teambition": "office-teambition", "gitlab": "office-gitlab", "dingtalk": "office-dingtalk"}
+  },
+  "teambition": {"projectId": "", "projectName": "", "assignedToMe": true, "unfinished": true},
+  "groups": [],
+  "members": [],
+  "taskCreation": "explicit_user_confirmation_per_draft",
+  "taskExecutionModes": {"default": "human_review", "humanReviewCheckpoints": ["implementation_plan", "verified_merge_delivery"]},
+  "developmentScope": {"mode": "single", "side": "frontend", "jointRequiresBothRepositoryBindings": true},
+  "requirementBaseBranch": "",
+  "branchPrefixes": {"requirement": "feature/", "productionPatch": "hotfix/", "release": "release/"},
+  "testMrMergePolicy": {"targetBranch": "develop", "autoMergeWhenVerified": false, "pinSourceSha": true},
+  "developerHandoff": {"authorized": false, "frontendRecipients": [], "backendRecipients": []},
+  "testHandoffPolicy": {"enabled": false, "statusName": "", "executorName": "", "markTaskDone": false},
+  "monitor": {"enabled": false}
+}

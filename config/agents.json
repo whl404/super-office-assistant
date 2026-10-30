@@ -153,8 +153,8 @@
     },
     {
       "id": "gitlab",
-      "enabled": false,
-      "status": "paused_by_user",
+      "enabled": true,
+      "status": "configured",
       "role_path": "agents/gitlab/AGENT.md",
       "model_config_ref": null,
       "max_parallel_tasks": 1,
@@ -163,9 +163,62 @@
           "id": "gitlab-mr-delivery",
           "path": "agents/gitlab/skills/gitlab-mr-delivery/SKILL.md",
           "effects": [
-            "read"
+            "read",
+            "write"
           ],
-          "services": []
+          "services": [
+            "gitlab"
+          ],
+          "tools": [
+            "mcp__gitlab__list_projects",
+            "mcp__gitlab__get_project",
+            "mcp__gitlab__get_branch",
+            "mcp__gitlab__get_commit",
+            "mcp__gitlab__list_merge_requests",
+            "mcp__gitlab__get_merge_request",
+            "mcp__gitlab__get_merge_request_approval_state",
+            "mcp__gitlab__list_merge_request_changed_files",
+            "mcp__gitlab__get_merge_request_file_diff",
+            "mcp__gitlab__create_merge_request",
+            "mcp__gitlab__update_merge_request"
+          ]
+        },
+        {
+          "id": "gitlab-create-branch",
+          "path": "agents/gitlab/skills/gitlab-create-branch/SKILL.md",
+          "effects": [
+            "read",
+            "write"
+          ],
+          "services": [
+            "gitlab"
+          ],
+          "tools": [
+            "mcp__gitlab__list_projects",
+            "mcp__gitlab__get_project",
+            "mcp__gitlab__get_branch",
+            "mcp__gitlab__get_commit",
+            "mcp__gitlab__create_branch"
+          ]
+        },
+        {
+          "id": "gitlab-submit-mr",
+          "path": "agents/gitlab/skills/gitlab-submit-mr/SKILL.md",
+          "effects": [
+            "read",
+            "write"
+          ],
+          "services": [
+            "gitlab"
+          ],
+          "tools": [
+            "mcp__gitlab__get_project",
+            "mcp__gitlab__get_branch",
+            "mcp__gitlab__list_merge_requests",
+            "mcp__gitlab__get_merge_request",
+            "mcp__gitlab__create_merge_request",
+            "mcp__gitlab__update_merge_request"
+          ]
         }
       ],
       "local_execution": "none"
@@ -184,6 +237,12 @@
           "effects": [
             "local_write"
           ],
+          "services": []
+        },
+        {
+          "id": "development-handoff",
+          "path": "agents/developer/skills/development-handoff/SKILL.md",
+          "effects": ["local_write"],
           "services": []
         }
       ],

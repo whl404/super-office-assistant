@@ -19,7 +19,7 @@ async def main():
             ledger.create_run("demo-run", "demo-user", "demo-org", max_calls=5)
             ctx = TaskContext("demo-run", "demo-task", "demo-attempt", 1, "demo-user", "demo-org",
                               "dingtalk", "dingtalk-scoped-write", "write")
-            name = "mcp__dingtalk_doc__create_document"
+            name = "mcp__dingtalk_docs__create_document"
             arguments = {"name": "离线演示文档"}
             grant = Grant("demo-auth", ctx.run_id, ctx.task_id, 1, ctx.principal_id, ctx.organization_id,
                           name, fingerprint(arguments), time.time() + 60, resource_key="demo:document-folder")

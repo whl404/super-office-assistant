@@ -14,3 +14,5 @@ description: 将本项目已规划的任务、依赖和有证据的执行进度�
 5. 保存对象 ID、前后状态、操作记录及关联 MR。写入超时先查询；无法确定时返回 `REMOTE_STATE_UNKNOWN`。
 
 输出真实任务映射及变更结果。缺少项目配置、状态映射或权限时返回阻塞；不能以文档检索成功替代业务操作成功。
+
+当前工具参数：创建任务使用 projectId/content，任务类型使用 sfcId；更新使用 taskId，仅传授权变更字段。旧备注与截止日期操作统一为 task_update 的 note/dueDate，该通用更新工具需要用户审批。状态更新使用 taskflowstatusId 或 tfsName；204 acknowledged 回执需再查询任务确认目标状态，未知结果不得自动重试。

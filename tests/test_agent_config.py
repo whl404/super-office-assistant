@@ -39,11 +39,54 @@ class AgentConfigTests(unittest.TestCase):
         with self.assertRaises(MODULE.ConfigError):
             self.config.assemble("dingtalk", "dingtalk-office-query", "write")
 
-    def test_paused_gitlab_cannot_be_assembled(self):
+    def test_gitlab_is_enabled_and_writes_require_user_approval(self):
+        read = self.config.assemble("gitlab", "gitlab-mr-delivery")
+        self.assertTrue(read["candidate_tools"])
+        self.assertTrue(all(t["effect"] == "read" for t in read["candidate_tools"]))
+        write = self.config.assemble("gitlab", "gitlab-mr-delivery", "write")
+        writes = [t for t in write["candidate_tools"] if t["effect"] == "write"]
+        self.assertEqual({t["name"] for t in writes}, {
+            "mcp__gitlab__create_merge_request", "mcp__gitlab__update_merge_request"})
+        self.assertTrue(all(t["approval_mode"] == "user" for t in writes))
+        plan = self.config.plan("gitlab-mr-delivery")
+        steps = {s["id"]: s for s in plan["steps"]}
+        self.assertIn("review", steps["mr"]["depends_on"])
+        self.assertEqual(steps["mr"]["requires_tool_effect"], "write")
+        self.assertEqual(steps["verify"]["requires_tool_effect"], "read")
+        self.assertFalse(plan["executed"])
+
+    def test_gitlab_branch_and_mr_skills_have_separate_write_tools(self):
+        for skill, expected in (
+            ("gitlab-create-branch", {"mcp__gitlab__create_branch"}),
+            ("gitlab-submit-mr", {"mcp__gitlab__create_merge_request", "mcp__gitlab__update_merge_request"}),
+        ):
+            read = self.config.assemble("gitlab", skill)
+            self.assertTrue(all(t["effect"] == "read" for t in read["candidate_tools"]))
+            write = self.config.assemble("gitlab", skill, "write")
+            writes = [t for t in write["candidate_tools"] if t["effect"] == "write"]
+            self.assertEqual({t["name"] for t in writes}, expected)
+            self.assertTrue(all(t["approval_mode"] == "user" for t in writes))
+
+    def test_skill_allowlist_cannot_borrow_another_roles_tool(self):
+        self.config.agents["gitlab"]["skills"][0]["tools"].append(
+            "mcp__teambition__teambition_task_create")
+        with self.assertRaises(MODULE.ConfigError):
+            self.config.validate()
+
+    def test_disabled_gitlab_still_cannot_be_assembled(self):
+        self.config.agents["gitlab"]["enabled"] = False
         with self.assertRaises(MODULE.ConfigError):
             self.config.assemble("gitlab", "gitlab-mr-delivery")
-        with self.assertRaises(MODULE.ConfigError):
-            self.config.plan("gitlab-mr-delivery")
+
+    def test_teambition_generic_update_cannot_inherit_ai_approval(self):
+        assembled = self.config.assemble("teambition", "teambition-task-sync", "write")
+        tools = {t["name"]: t for t in assembled["candidate_tools"]}
+        update = "mcp__teambition__teambition_task_update"
+        self.assertEqual(tools[update]["approval_mode"], "user")
+        self.assertIn("mcp__teambition__teambition_docs_get", tools)
+        self.config.approval_policy.data["tool_modes"][update] = "ai"
+        self.assertEqual(self.config.approval_policy.mode(update, "write", ()), "user")
+        self.assertTrue(all(n.startswith("mcp__teambition__") for n in tools))
 
     def test_teambition_cannot_load_dingtalk_services(self):
         skill = self.config.agents["teambition"]["skills"][0]
@@ -59,7 +102,7 @@ class AgentConfigTests(unittest.TestCase):
 
     def test_unlisted_wildcard_tools_are_rejected(self):
         service = self.config.services["dingtalk-contact"]
-        service["tools"].append({"name": "mcp__dingtalk_contact__*", "effect": "read"})
+        service["tools"].append({"name": "mcp__dingtalk_contacts__*", "effect": "read"})
         with self.assertRaises(MODULE.ConfigError):
             self.config.validate()
 

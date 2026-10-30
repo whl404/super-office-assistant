@@ -224,12 +224,89 @@
           ]
         }
       ]
-    }
-  ],
-  "unavailable_workflows": [
+    },
     {
       "id": "gitlab-mr-delivery",
-      "reason": "GitLab MCP 与 Agent 已按用户要求暂停；不能自动替换为 GitHub，也不能把本地差异当成 MR 交付。"
+      "description": "在明确授权的 GitLab 项目中开发、评审并交付 MR；核对当前提交和 CI，不自动合并或发布",
+      "delivery_target": "verified_mr_and_ci",
+      "required_inputs": [
+        "repository_ref",
+        "project_ref",
+        "base_sha",
+        "target_branch",
+        "acceptance_criteria",
+        "workspace_authorization",
+        "mr_authorization"
+      ],
+      "steps": [
+        {
+          "id": "plan",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": []
+        },
+        {
+          "id": "context",
+          "agent": "gitlab",
+          "skill": "gitlab-mr-delivery",
+          "effect": "read",
+          "depends_on": [
+            "plan"
+          ],
+          "requires_tool_effect": "read"
+        },
+        {
+          "id": "implement",
+          "agent": "developer",
+          "skill": "implement-change",
+          "effect": "local_write",
+          "depends_on": [
+            "context"
+          ]
+        },
+        {
+          "id": "review",
+          "agent": "reviewer",
+          "skill": "review-delivery",
+          "effect": "read",
+          "depends_on": [
+            "implement"
+          ]
+        },
+        {
+          "id": "mr",
+          "agent": "gitlab",
+          "skill": "gitlab-mr-delivery",
+          "effect": "write",
+          "depends_on": [
+            "context",
+            "implement",
+            "review"
+          ],
+          "requires_tool_effect": "write"
+        },
+        {
+          "id": "verify",
+          "agent": "gitlab",
+          "skill": "gitlab-mr-delivery",
+          "effect": "read",
+          "depends_on": [
+            "mr"
+          ],
+          "requires_tool_effect": "read"
+        },
+        {
+          "id": "deliver",
+          "agent": "orchestrator",
+          "skill": "orchestrate-delivery",
+          "effect": "read",
+          "depends_on": [
+            "verify"
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "unavailable_workflows": []
 }

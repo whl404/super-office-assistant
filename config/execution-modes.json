@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "default_mode": "human_review",
+  "authorized_monitor_default_mode": "full_auto",
+  "selection_precedence": ["explicit_task_choice", "workspace_default", "default_mode"],
+  "modes": {
+    "human_review": {
+      "label": "人工审核",
+      "checkpoints": ["implementation_plan", "verified_merge_delivery"],
+      "auto_merge": false
+    },
+    "full_auto": {
+      "label": "全自动",
+      "checkpoints": [],
+      "auto_merge": "only_with_workspace_authorization_and_verified_current_commit",
+      "escalate_on": ["ambiguous_acceptance", "scope_expansion", "cross_repository_change", "public_api_or_data_model_change", "unknown_write_outcome", "rework_limit_reached"]
+    }
+  },
+  "invariants": {
+    "chat_task_creation": "explicit_user_confirmation_per_draft",
+    "database_mutation": "exact_sql_environment_table_conditions_and_estimated_rows_then_explicit_confirmation_per_operation",
+    "database_ddl": "disabled",
+    "database_write_tool": "mysql_dev_write_with_native_prompt_approval",
+    "production_release": "requires_separate_explicit_authorization",
+    "external_messages": "requires_explicit_authorization",
+    "workflow_mode_does_not_override_tool_approval": true
+  },
+  "integration_status": "orchestrator_instruction_policy_not_yet_enforced_by_standalone_scheduler"
+}

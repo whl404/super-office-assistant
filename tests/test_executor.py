@@ -13,8 +13,8 @@ from agent_runtime.executor import (Binding, Executor, Grant, Ledger, Reconcilia
 from scripts.agents import AgentConfig
 from agent_runtime.approvals import ApprovalPolicy
 
-READ = "mcp__dingtalk_contact__get_dept_info_by_dept_id"
-WRITE = "mcp__dingtalk_doc__create_document"
+READ = "mcp__dingtalk_contacts__get_dept_info_by_dept_id"
+WRITE = "mcp__dingtalk_docs__create_document"
 
 
 def validate_read(args):

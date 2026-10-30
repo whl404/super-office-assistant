@@ -77,6 +77,13 @@ class AgentConfig:
                         raise ConfigError(f"Unknown service: {service_id}")
                     if self.services[service_id]["owner"] != agent["id"]:
                         raise ConfigError(f"Cross-owner tool access: {agent['id']} / {service_id}")
+                if "tools" in skill:
+                    allowed = {t["name"] for sid in skill["services"] for t in self.services[sid]["tools"]}
+                    selected = skill["tools"]
+                    if (not isinstance(selected, list) or not selected
+                            or any(not isinstance(n, str) for n in selected)
+                            or len(selected) != len(set(selected)) or not set(selected) <= allowed):
+                        raise ConfigError(f"Invalid skill tool allowlist: {skill['id']}")
         for workflow in self.workflows.values():
             steps = unique(workflow["steps"], "id", "workflow step")
             completed = set()
@@ -112,7 +119,7 @@ class AgentConfig:
         # A write task needs reads for locating and verifying its target.
         effects = {"read", "write"} if effect == "write" else {"read"} if effect == "read" else set()
         tools = [tool for sid in skill["services"] for tool in self.services[sid]["tools"]
-                 if tool["effect"] in effects]
+                 if tool["effect"] in effects and ("tools" not in skill or tool["name"] in skill["tools"])]
         tools = [{**tool, "approval_mode": self.approval_policy.mode(tool["name"], tool["effect"], ())}
                  for tool in tools]
         instructions = [project_file(self.root, path).read_text(encoding="utf-8")

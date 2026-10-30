@@ -1,13 +1,22 @@
 {
   "schema_version": "1.0",
-  "policy_version": "1",
-  "default_modes": {"read": "auto", "write": "user"},
+  "policy_version": "2",
+  "default_modes": {
+    "read": "auto",
+    "write": "user"
+  },
   "approval_ttl_seconds": 900,
   "ai_review_timeout_seconds": 30,
   "ai_min_confidence": 0.9,
   "ai_reviewer_id": "approval-reviewer",
   "ai_reviewer_instructions": "agents/approval-reviewer/AGENT.md",
-  "user_required_flags": ["external_recipients", "destructive", "permission_change", "financial_commitment", "batch_broadcast"],
+  "user_required_flags": [
+    "external_recipients",
+    "destructive",
+    "permission_change",
+    "financial_commitment",
+    "batch_broadcast"
+  ],
   "mandatory_user_tools": [
     "mcp__dingtalk_bot__send_robot_group_message",
     "mcp__dingtalk_bot__batch_send_robot_msg_to_users",
@@ -21,11 +30,12 @@
     "mcp__dingtalk_meeting__invite_meeting_participants",
     "mcp__dingtalk_aiyin__generate",
     "mcp__dingtalk_aiyin__edit",
-    "mcp__dingtalk_aiyin__upscale"
+    "mcp__dingtalk_aiyin__upscale",
+    "mcp__teambition__teambition_task_update"
   ],
   "tool_modes": {
-    "mcp__dingtalk_doc__create_document": "ai",
-    "mcp__dingtalk_doc__update_document": "ai",
+    "mcp__dingtalk_docs__create_document": "ai",
+    "mcp__dingtalk_docs__update_document": "ai",
     "mcp__dingtalk_drive__create_folder": "ai",
     "mcp__dingtalk_wiki__create_wikiSpace": "ai",
     "mcp__dingtalk_mail__create_draft": "ai",
@@ -36,10 +46,8 @@
     "mcp__dingtalk_todo__create_personal_todo": "ai",
     "mcp__dingtalk_todo__update_todo_task": "ai",
     "mcp__dingtalk_todo__update_todo_done_status": "ai",
-    "mcp__dingtalk_teambition__create_task": "ai",
-    "mcp__dingtalk_teambition__update_task_status": "ai",
-    "mcp__dingtalk_teambition__update_task_remark": "ai",
-    "mcp__dingtalk_teambition__set_task_due_date": "ai",
-    "mcp__dingtalk_teambition__add_task_comment": "ai"
+    "mcp__teambition__teambition_task_create": "ai",
+    "mcp__teambition__teambition_task_update_status": "ai",
+    "mcp__teambition__teambition_task_comment": "ai"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "snapshot_date": "2026-10-29",
+  "snapshot_date": "2026-10-30",
   "scope": "current_codex_host",
   "default_tool_policy": "deny_unlisted",
   "notes": [
@@ -128,31 +128,31 @@
       "discovered_tool_count": 40,
       "tools": [
         {
-          "name": "mcp__dingtalk_doc__get_recent_list",
+          "name": "mcp__dingtalk_docs__get_recent_list",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_doc__search_documents",
+          "name": "mcp__dingtalk_docs__search_documents",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_doc__get_document_info",
+          "name": "mcp__dingtalk_docs__get_document_info",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_doc__get_document_content",
+          "name": "mcp__dingtalk_docs__get_document_content",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_doc__list_nodes",
+          "name": "mcp__dingtalk_docs__list_nodes",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_doc__create_document",
+          "name": "mcp__dingtalk_docs__create_document",
           "effect": "write"
         },
         {
-          "name": "mcp__dingtalk_doc__update_document",
+          "name": "mcp__dingtalk_docs__update_document",
           "effect": "write"
         }
       ]
@@ -167,27 +167,27 @@
       "discovered_tool_count": 54,
       "tools": [
         {
-          "name": "mcp__dingtalk_contact__get_current_user_profile",
+          "name": "mcp__dingtalk_contacts__get_current_user_profile",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_contact__get_dept_info_by_dept_id",
+          "name": "mcp__dingtalk_contacts__get_dept_info_by_dept_id",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_contact__get_sub_depts_by_dept_id",
+          "name": "mcp__dingtalk_contacts__get_sub_depts_by_dept_id",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_contact__get_dept_members_by_deptId",
+          "name": "mcp__dingtalk_contacts__get_dept_members_by_deptId",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_contact__get_friend_list",
+          "name": "mcp__dingtalk_contacts__get_friend_list",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_contact__search_user_by_key_word",
+          "name": "mcp__dingtalk_contacts__search_user_by_key_word",
           "effect": "read"
         }
       ]
@@ -348,67 +348,68 @@
       "label": "Teambition 项目管理（新）",
       "owner": "teambition",
       "transport": "streamable_http",
-      "connection_status": "oauth_configured",
-      "verification": "read_probe_passed",
+      "connection_status": "configured_current_host",
+      "verification": "discovered_only",
       "discovered_tool_count": 26,
       "tools": [
         {
-          "name": "mcp__dingtalk_teambition__get_user_projects",
+          "name": "mcp__teambition__teambition_project_query",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__list_projects",
+          "name": "mcp__teambition__teambition_project_sfc_query",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__get_project_task_types",
+          "name": "mcp__teambition__teambition_project_member_query",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__get_project_member_list",
+          "name": "mcp__teambition__teambition_task_query",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__get_task_detail",
+          "name": "mcp__teambition__teambition_task_tfs_query",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__get_task_progress",
+          "name": "mcp__teambition__teambition_project_task_query",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__search_project_workflow_status",
+          "name": "mcp__teambition__teambition_project_priority_query",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__search_task_ids_by_tql",
+          "name": "mcp__teambition__teambition_docs_search",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__list_org_task_priorities",
+          "name": "mcp__teambition__teambition_docs_get",
           "effect": "read"
         },
         {
-          "name": "mcp__dingtalk_teambition__create_task",
+          "name": "mcp__teambition__teambition_task_tfs_available",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__teambition__teambition_task_create",
           "effect": "write"
         },
         {
-          "name": "mcp__dingtalk_teambition__update_task_status",
+          "name": "mcp__teambition__teambition_task_update_status",
           "effect": "write"
         },
         {
-          "name": "mcp__dingtalk_teambition__update_task_remark",
+          "name": "mcp__teambition__teambition_task_update",
           "effect": "write"
         },
         {
-          "name": "mcp__dingtalk_teambition__set_task_due_date",
-          "effect": "write"
-        },
-        {
-          "name": "mcp__dingtalk_teambition__add_task_comment",
+          "name": "mcp__teambition__teambition_task_comment",
           "effect": "write"
         }
-      ]
+      ],
+      "notes": "当前宿主使用 teambition 命名空间；旧网关参数不可复用。按实时 Schema 注册适配器。"
     },
     {
       "id": "dingtalk-drive",
@@ -586,12 +587,75 @@
           "effect": "read"
         }
       ]
+    },
+    {
+      "id": "gitlab",
+      "label": "GitLab",
+      "owner": "gitlab",
+      "transport": "stdio",
+      "connection_status": "configured_with_glab_credentials",
+      "verification": "read_probe_passed",
+      "discovered_tool_count": 40,
+      "instance_url": "https://gitlab.hmglog.com",
+      "instance_version": "13.8.8",
+      "implementation": "@zereight/mcp-gitlab@2.3.15",
+      "tools": [
+        {
+          "name": "mcp__gitlab__list_projects",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__get_project",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__get_branch",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__get_commit",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__list_merge_requests",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__get_merge_request",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__get_merge_request_approval_state",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__list_merge_request_changed_files",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__get_merge_request_file_diff",
+          "effect": "read"
+        },
+        {
+          "name": "mcp__gitlab__create_merge_request",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__gitlab__update_merge_request",
+          "effect": "write"
+        },
+        {
+          "name": "mcp__gitlab__create_branch",
+          "effect": "write"
+        }
+      ],
+      "notes": "create_branch 需要生产适配器发现 branches 工具组；当前只读探测不代表创建分支已实测。"
     }
   ],
   "known_limitations": [
     {
       "service_id": "dingtalk-contact",
-      "tool": "mcp__dingtalk_contact__get_org_ext_fields",
+      "tool": "mcp__dingtalk_contacts__get_org_ext_fields",
       "code": "12063",
       "detail": "员工属性字段查询权限不足；基础个人信息与根部门人数查询已成功。"
     },
@@ -603,6 +667,10 @@
       "service_id": "dingtalk-open-platform-docs",
       "tool": "mcp__dingtalk_open_platform_docs__devdoc_rag_pretest",
       "detail": "本次探测返回空结果；采用已返回资料的 search_dingtalk_open_docs。"
+    },
+    {
+      "service_id": "gitlab",
+      "detail": "已通过 list_projects 只读探测；旧版实例不提供官方 MCP，使用本地社区服务。独立运行时适配器尚未注册；CI 证据不足时阻塞交付，不默认通过。"
     }
   ],
   "excluded_services": [
@@ -613,10 +681,6 @@
     {
       "name": "工作通知（应用授权）",
       "reason": "用户取消接入"
-    },
-    {
-      "name": "GitLab MCP",
-      "reason": "用户暂停接入"
     }
   ],
   "local_tools": [

@@ -1,21 +1,21 @@
 # 工具接入与授权
 
-## 当前状态（2026-10-29）
+## 当前状态（2026-10-30）
 
-当前 Codex 主机已配置并 OAuth 授权 18 项服务，详见 [能力清单](../config/mcp-catalog.json)。钉钉角色管理其中 17 项，Teambition 独立管理 1 项。DWS 1.0.66 已安装登录；独立运行时还未实现。
+当前 Codex 主机已配置并 OAuth 授权 18 项服务，详见 [能力清单](../config/mcp-catalog.json)。钉钉角色管理其中 17 项，Teambition 独立管理 1 项；另有 1 项 GitLab 本地 MCP，复用 glab 凭据，共 19 项服务。持久化运行时已实现，生产适配器尚未接入。
 
-用户已取消 DING 消息（应用授权）和工作通知（应用授权）；GitLab MCP 暂停接入，不再作为当前必需条件。机器人列表探测返回空，通讯录员工字段查询出现权限错误，均需按任务处理，不能以服务已连接推断业务操作可用。
+用户已取消 DING 消息（应用授权）和工作通知（应用授权）；GitLab MCP 已接入 `https://gitlab.hmglog.com`，项目列表只读探测成功。机器人列表探测返回空，通讯录员工字段查询出现权限错误，均需按任务处理，不能以服务已连接推断业务操作可用。
 
 ## 能力分配
 
-下表为逻辑能力，具体真实工具名已列在能力清单。95 个常用工具人工分类为 read/write，并通过角色及技能筛选；其余工具默认不分配。清单是候选配置，不是宿主平台现有权限的变更。
+下表为逻辑能力，具体真实工具名已列在能力清单。107 个常用工具人工分类为 read/write，并通过角色及技能筛选；其余工具默认不分配。清单是候选配置，不是宿主平台现有权限的变更。
 
 | Agent | 允许的逻辑能力 | 默认不授予 |
 | --- | --- | --- |
 | orchestrator | 分派任务、请求信息、读取状态与产物、提出计划变更 | 直接操作外部系统、任意 Shell |
 | dingtalk | 读取授权消息/文档、在指定会话回复、按任务范围维护文档 | 任意群广播、组织管理、修改其他人的资料 |
 | teambition | 查询授权项目、创建/关联任务、维护约定字段与状态 | 项目删除、组织管理、跨项目移动 |
-| gitlab（暂停） | 角色设计保留，当前不调度 | 所有 GitLab 实际操作 |
+| gitlab | 查询仓库、MR；按授权创建/更新 MR | 自动合并、发布、重跑 CI及项目管理 |
 | developer | 工作区文件读写、Git 分支/提交/推送、约定测试命令 | 业务系统凭证、受保护分支写入、GitLab 管理 API |
 | reviewer | 读取提交、隔离环境执行验证、输出评审产物 | 修改开发提交、合并 MR、修改业务任务 |
 
@@ -33,19 +33,19 @@
 
 ## Teambition
 
-当前采用用户指定的钉钉网关 Teambition 项目管理（新）-MCP：`https://mcp-gw.dingtalk.com/oauth/server/teambition`。已授权并成功查询项目，不另接 `open.teambition.com/api/mcp/v2`。文档检索服务与业务服务仍须区分。
+当前宿主使用 `mcp__teambition__teambition_*` 工具，逻辑服务 ID 保持 `dingtalk-teambition`。原网关工具名和参数不再直接使用；生产适配器按当前 Schema 注册。查询项目使用 project_query，任务使用 task_query/project_task_query；任务类型使用 project_sfc_query，状态定义使用 task_tfs_query。
 
-执行任务前查询项目 ID、任务类型、字段和状态，配置内部映射。当前 update_task_status 使用状态名，从项目状态查询结果取值，不假定接收状态 ID。已有任务触发时优先复用，避免按标题重复创建。
+TQL 查询前读取 docs_get 的 task/tql；陌生能力先 docs_search 再 docs_get。状态更新支持 taskflowstatusId 或 tfsName，参数须来自同项目查询结果。备注和截止时间统一使用 task_update 的 note/dueDate；通用更新工具采用用户审批，避免扩大原有 AI 批准范围。已有任务触发时优先复用，避免按标题重复创建。
 
 参考：[业务与文档 MCP 区别](https://open.teambition.com/docs/documents/695b28bcfca732ddb816bd7e)。
 
 ## GitLab 与代码执行
 
-本节是后续扩展设计。GitLab Agent 当前关闭，不能执行 MR/CI 流程；也不因当前仓库在 GitHub 就自动更换平台。本地代码交付按用户明确指定的目标验证。
+GitLab Agent 与 MR 模板已启用。本机实例版本为 13.8.8，官方 MCP 端点不可用，采用 `@zereight/mcp-gitlab@2.3.15` 本地服务，启动时从 glab 读取凭据。独立服务不自动继承宿主 MCP，仍需注册生产适配器。不会因当前仓库在 GitHub 就自动更换平台。本地代码交付按用户明确指定的目标验证。
 
 核对部署版本、许可、账户权限和工具集合，按能力选择 MCP 或 API。GitLab MCP 不是代码测试运行环境。
 
-GitLab Agent 返回确定的仓库 ID、clone 引用、基础分支与 SHA；开发 Agent 获取范围受限的 Git 访问凭证并提交到 `codex/<task-id>` 等项目允许的工作分支。GitLab Agent 再创建 MR。
+GitLab Agent 返回确定的仓库 ID、clone 引用、基础分支与 SHA；开发 Agent 获取范围受限的 Git 访问凭证并提交到对应工作分支：需求 `feature/{任务号}`、生产补丁 `hotfix/{任务号}`、发布 `release/{发布标识}`。发布标识按用户指定或项目约定确定，不使用 `codex/` 前缀。GitLab Agent 再创建 MR。
 
 运行未审查代码时，工作区需隔离于业务凭证。安装依赖、网络访问和测试命令由项目执行策略控制；仓库脚本也不能自动获得钉钉、Teambition 或管理令牌。
 
@@ -69,7 +69,7 @@ GitLab Agent 返回确定的仓库 ID、clone 引用、基础分支与 SHA；开
 - 试点发起人、组织、钉钉会话与机器人身份。
 - DWS 版本及凭证配置引用、选用的 MCP 及能力映射。
 - Teambition 项目、字段、状态映射和触发规则。
-- 若未来恢复 GitLab：主机、项目、基础分支、Git 身份、CI 完成条件。
+- GitLab 任务执行前：主机、项目、基础分支、Git 身份、CI 完成条件。
 - 自动操作范围、需确认动作、时限及资料保留规则。
 
 配置缺失时可运行模拟流程，真实适配器保持不可用；不要把未接入能力显示为执行成功。

@@ -9,7 +9,7 @@ from agent_runtime.executor import Binding, Executor, Grant, Ledger, fingerprint
 from agent_runtime.scheduler import Complete, Scheduler, ToolRequest, Validation
 from scripts.agents import AgentConfig
 
-READ = "mcp__dingtalk_contact__get_dept_info_by_dept_id"
+READ = "mcp__dingtalk_contacts__get_dept_info_by_dept_id"
 SEND = "mcp__dingtalk_mail__send_email"
 OWNER = {"principal_id": "demo-user", "organization_id": "demo-org"}
 

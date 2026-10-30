@@ -11,8 +11,8 @@ from agent_runtime.approvals import AIReview, ApprovalPolicy
 from agent_runtime.executor import Binding, Executor, Grant, Ledger, TaskContext, fingerprint
 from scripts.agents import AgentConfig
 
-READ = "mcp__dingtalk_contact__get_dept_info_by_dept_id"
-WRITE = "mcp__dingtalk_doc__create_document"
+READ = "mcp__dingtalk_contacts__get_dept_info_by_dept_id"
+WRITE = "mcp__dingtalk_docs__create_document"
 SEND = "mcp__dingtalk_mail__send_email"
 
 

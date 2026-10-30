@@ -11,9 +11,9 @@ from agent_runtime.executor import Binding, Executor, Grant, Ledger, Reconciliat
 from agent_runtime.scheduler import Complete, NeedInput, Scheduler, ToolRequest, Validation
 from scripts.agents import AgentConfig
 
-READ = "mcp__dingtalk_contact__get_dept_info_by_dept_id"
+READ = "mcp__dingtalk_contacts__get_dept_info_by_dept_id"
 SEND = "mcp__dingtalk_mail__send_email"
-DOC = "mcp__dingtalk_doc__create_document"
+DOC = "mcp__dingtalk_docs__create_document"
 OWNER = {"principal_id": "user", "organization_id": "org"}
 
 

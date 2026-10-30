@@ -4,9 +4,9 @@
 
 用户通过钉钉提出工作目标，统筹 Agent 组织专业 Agent 执行，在 Teambition 跟踪业务任务，在 GitLab 交付代码变更。保留办公查询、文档整理等较短流程的扩展能力。
 
-默认试点为本机、单用户、单项目。当前先交付办公查询和项目任务流程；GitLab 按用户要求暂停，MR 目标仅作为后续扩展。运行框架、模型供应商、部署方式尚未选定；本设计不依赖特定厂商 SDK。DWS 指 DingTalk Workspace CLI。
+默认试点为本机、单用户、单项目。当前先交付办公查询和项目任务流程；GitLab 已启用，提供 MR 交付模板，真实运行需注册适配器。运行框架、模型供应商、部署方式尚未选定；本设计不依赖特定厂商 SDK。DWS 指 DingTalk Workspace CLI。
 
-六角色及技能已可由 [配置装配器](../scripts/agents.py) 读取；它不执行模型或外部工具。MCP 与 DWS 已在当前 Codex 主机接入，持久化引擎、消息入口及工具代理仍为设计组件。
+六角色及技能已可由 [配置装配器](../scripts/agents.py) 读取；它不执行模型或外部工具。MCP 与 DWS 已在当前 Codex 主机接入，持久化引擎已实现；真实消息入口及生产工具适配器仍待接入。
 
 ## 组件关系
 
@@ -17,7 +17,7 @@ flowchart TD
     DD --> O[统筹 Agent]
     O --> DD
     O --> TB[Teambition Agent]
-    O -. 暂停 .-> GL[GitLab Agent]
+    O --> GL[GitLab Agent]
     O --> DEV[开发 Agent]
     O --> REV[评审 Agent]
     O <--> WF[持久化工作流引擎]

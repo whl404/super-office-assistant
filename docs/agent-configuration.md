@@ -2,9 +2,9 @@
 
 ## 当前完成程度
 
-六个角色、十项技能、18 项服务和五条工作流已形成可校验配置。统筹、钉钉、Teambition、开发、评审为 `configured`；GitLab 为 `paused_by_user`。`enabled=true` 只表示允许装配，不表示已部署进程或可以无人值守执行。
+六个角色、十二项技能、19 项服务和六条工作流已形成可校验配置。六个角色均为 `configured`。`enabled=true` 只表示允许装配，不表示已部署进程或可以无人值守执行。
 
-当前主机已具备 18 项 MCP 连接及 DWS 登录；15 项服务曾有只读探测成功。群聊、视频会议、AI 印仅发现工具，没有为了验证而创建业务对象。探测成功不是对所有操作权限的保证。
+当前主机已具备 19 项 MCP 配置；新增 GitLab 项目列表只读探测成功，原有服务的历史探测记录见能力清单。群聊、视频会议、AI 印仅发现工具，没有为了验证而创建业务对象。探测成功不是对所有操作权限的保证。
 
 ## 四份配置
 
@@ -12,7 +12,7 @@
 | --- | --- |
 | [agents.json](../config/agents.json) | 角色开关、角色文件、技能、候选服务、任务效果与执行边界 |
 | [mcp-catalog.json](../config/mcp-catalog.json) | 真实工具名、人工分类的效果、归属、历史验证及限制；不存令牌 |
-| [workflows.json](../config/workflows.json) | 五条任务模板、依赖、交付目标及必需输入 |
+| [workflows.json](../config/workflows.json) | 六条任务模板、依赖、交付目标及必需输入 |
 | [approvals.json](../config/approvals.json) | auto/ai/user 模式、必须用户审核的动作、有效期与 AI 门槛 |
 
 技能中的 `effects` 表示能处理的任务效果，工具单独标注 `read/write`。任务效果 `local_write` 用于开发的本地代码修改，不授予业务 MCP。写技能也可只按 `read` 装配，用于定位目标；只有选择 `write` 才附带候选写工具，且不代表已有任务授权。
@@ -56,3 +56,5 @@ python scripts/agents.py assemble developer implement-change --effect local_writ
 先选模型并设置费用预算，接入任务/结果协议校验与持久化；再用实时工具发现把候选名映射到 SDK 工具，按每次任务筛选资源与动作。当前 Codex 的 OAuth 凭证由其自身存储管理，不复制到仓库、提示词或任意代码工作区。
 
 DWS 作为钉钉角色的受控适配器：验证版本和 Schema，以参数数组执行，动态解析安装路径及身份。普通模型进程不直接拥有任意 Shell 权限，也不因 MCP 权限错误而换用 DWS 越权。
+
+GitLab 新增 gitlab-create-branch 和 gitlab-submit-mr（测试环境 develop）。技能可用 tools 字段在 services 范围内进一步缩小候选工具，装配器和执行器共同遵守；缺省仍按原服务规则。创建分支技能不获得 MR 写工具，提交 MR 技能不获得创建分支工具。新增技能可独立装配，由统筹按目标选择，不自动创建真实分支或 MR。
