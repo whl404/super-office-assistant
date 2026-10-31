@@ -10,6 +10,8 @@
 
 ## 阅读顺序
 
+全局办公角色的现有安装器和分享包面向 **Codex**；角色规则本身不限定模型。使用 DeepSeek 模型不代表所用 harness 兼容 Codex 的角色注册、工具和调度机制。其他 harness 需要适配，当前未提供经过验证的 DeepSeek harness 安装包。详见[全局角色与运行框架兼容性](docs/global-office-agents.md)和[分享包安装说明](distribution/office-agents/README.md)。
+
 1. [架构与设计决策](docs/architecture.md)
 2. [工作流、状态与恢复](docs/workflow.md)
 3. [任务与结果协议](docs/contracts.md)
